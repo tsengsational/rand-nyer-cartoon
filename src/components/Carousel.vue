@@ -3,13 +3,13 @@
     <div id="carousel">
       <button id="back" @click="handlePrev"><</button>
       <div class="prev">
-        <cartoon v-for="num in previous" :num="num" />
+        <cartoon v-for="(num, index) in previous" :num="num" :key="index" />
       </div>
       <div class="current">
         <cartoon id="current" :num="current" />
       </div>
       <div class="next">
-        <cartoon v-for="num in next" :num="num" />
+        <cartoon v-for="(num, index) in next" :num="num" :key="index" />
       </div>
       <button id="next" @click="handleNext">></button>
     </div>
@@ -43,8 +43,7 @@
             counter++
             next = this.randomCartoon()
             if (counter >= 15) {
-              throw 'Error: No more cartoons'
-              break;
+              throw 'Error: No more cartoons';
             }
             if (this.checkUnique(next)) {
               break;

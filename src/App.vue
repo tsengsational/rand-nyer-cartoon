@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import Logo from './components/Logo.vue'
 import Carousel from './components/Carousel.vue'
 
