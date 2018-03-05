@@ -41,7 +41,7 @@
       handleNext: function() {
         let self = this
         if (this.next.length === 1) {
-          var next = this.randomCartoon()
+          let next = this.randomCartoon()
           let counter = 0
           this.fadeOut = true
           setTimeout(function () {
