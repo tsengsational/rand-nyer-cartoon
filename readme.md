@@ -2,4 +2,4 @@
 
 An implementation of Vue.js mimicking the [New Yorker Cartoons at Random](https://www.newyorker.com/cartoons/random/) application.
 
-[LIVE DEMO](tsengsational.github.io/rand-nyer-cartoon/)
+[LIVE DEMO](http://tsengsational.github.io/rand-nyer-cartoon/)
