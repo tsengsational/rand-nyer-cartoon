@@ -5,7 +5,7 @@
       <div class="prev">
         <cartoon v-for="(num, index) in previous" :num="num" :key="index" />
       </div>
-      <div class="current">
+      <div class="current" v-bind:class="{fadeIn, fadeOut, hide}">
         <cartoon id="current" :num="current" />
       </div>
       <div class="next">
@@ -25,7 +25,10 @@
         cartoons: [],
         current: '',
         next: [],
-        previous: []
+        previous: [],
+        fadeIn: false,
+        fadeOut: false,
+        hide: false
       }
     },
     components: {Cartoon},
@@ -36,28 +39,51 @@
         return unique
       },
       handleNext: function() {
+        let self = this
         if (this.next.length === 1) {
-          let next = this.randomCartoon()
+          var next = this.randomCartoon()
           let counter = 0
-          while (!this.checkUnique(next)) {
-            counter++
-            next = this.randomCartoon()
-            if (counter >= 15) {
-              throw 'Error: No more cartoons';
+          this.fadeOut = true
+          setTimeout(function () {
+            self.fadeOut = false
+            while (!self.checkUnique(next)) {
+              counter++
+              next = self.randomCartoon()
+              if (counter >= 15) {
+                throw 'Error: No more cartoons';
+              }
+              if (self.checkUnique(next)) {
+                break;
+              }
             }
-            if (this.checkUnique(next)) {
-              break;
-            }
-          }
-          this.next.push(next)
+            self.previous.push(self.current)
+            self.current = self.next.shift()
+            self.next.push(next)
+          }, 250);
         }
-        this.previous.push(this.current)
-        this.current = this.next.shift()
+        if (this.next.length > 1) {
+          this.previous.push(this.current)
+          this.current = this.next.shift()
+        }
+        this.fadeIn = true
+        setTimeout(function () {
+          self.fadeIn = false
+        }, 250);
       },
       handlePrev: function() {
         if (this.previous.length >= 1) {
           this.next.unshift(this.current)
-          this.current = this.previous.pop()
+          this.fadeIn = false
+          this.fadeOut = true
+          let self = this
+          setTimeout(function () {
+            self.fadeOut = false
+            self.current = self.previous.pop()
+            self.fadeIn = true
+          }, 250);
+          setTimeout(function() {
+            self.fadeIn = false
+          }, 250);
         }
       },
       randomCartoon: function () {
@@ -93,6 +119,19 @@
   #next {
     right: calc(50% - 40px);
   }
+  .fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+    animation-duration: .25s;
+  }
+  .fadeOut {
+    -webkit-animation-name: fadeOut;
+    animation-name: fadeOut;
+    animation-duration: .25s;
+  }
+  .hide {
+    opacity: 0;
+  }
   .next {
     overflow: hidden;
     position: absolute;
@@ -110,6 +149,44 @@
     position: absolute;
     width: 100px;
   }
+
+  @-webkit-keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+  @-webkit-keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
 
   @media (min-width: 600px) {
     #back {
