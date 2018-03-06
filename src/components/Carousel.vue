@@ -172,6 +172,7 @@
     right: 0;
     top: 0;
     transform: rotateY(180deg);
+    width: 100%
   }
   .back-text {
     position: absolute;
@@ -200,7 +201,7 @@
     display: grid;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
-    grid-template-columns: repeat(5, auto);
+    grid-template-columns: repeat(5, 20%);
     grid-auto-rows: 20%;
   }
   .hide {
@@ -231,7 +232,6 @@
     position: absolute;
     width: 100px;
   }
-
   @-webkit-keyframes fadeIn {
     from {
       opacity: 0;
@@ -244,7 +244,6 @@
     from {
       opacity: 0;
     }
-
     to {
       opacity: 1;
     }
@@ -253,23 +252,18 @@
     from {
       opacity: 1;
     }
-
     to {
       opacity: 0;
     }
   }
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
   }
-
-  to {
-    opacity: 0;
-  }
-}
-
-
   @media (min-width: 600px) {
     #back {
       left: 20px;
