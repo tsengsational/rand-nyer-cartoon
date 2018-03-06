@@ -120,7 +120,7 @@
         toons.concat(this.next)
         if (toons.length >= 5) {
           let length = toons.length
-          let del = toons.length - 5
+          let del = length - 5
           toons.splice(0, del)
         }
         console.log(toons)
@@ -165,7 +165,6 @@
   #carousel {
     transition: 0.6s;
     transform-style: preserve-3d;
-	  // position: relative;
   }
   .back {
     position: absolute;
