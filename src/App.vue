@@ -18,7 +18,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+
 #app {
   background-color: #f1f1f1;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

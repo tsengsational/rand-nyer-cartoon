@@ -12,9 +12,15 @@
     "vue": "^2.5.13"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome": "^1.1.4",
+    "@fortawesome/fontawesome-free-solid": "^5.0.8",
+    "@fortawesome/vue-fontawesome": "0.0.22",
     "@vue/cli-plugin-babel": "^3.0.0-beta.2",
     "@vue/cli-plugin-eslint": "^3.0.0-beta.2",
     "@vue/cli-service": "^3.0.0-beta.2",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.20.2",
     "vue-gh-pages": "^1.10.2",
     "vue-template-compiler": "^2.5.13"
   },

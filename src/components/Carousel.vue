@@ -1,42 +1,58 @@
 <template>
-  <div class="outer">
+  <div class="outer" v-bind:class="{flip}">
     <div id="carousel">
-      <button id="back" @click="handlePrev"><</button>
-      <div class="prev">
-        <cartoon v-for="(num, index) in previous" :num="num" :key="index" />
+      <div class="front">
+        <div class="prev">
+          <cartoon v-for="(num, index) in previous" :num="num" :key="index" />
+        </div>
+        <div class="current" v-bind:class="{fadeIn, fadeOut, hide}">
+          <cartoon id="current" :num="current" />
+        </div>
+        <div class="next">
+          <cartoon v-for="(num, index) in next" :num="num" :key="index" />
+        </div>
+        <button id="back" @click="handlePrev"><</button>
+        <button id="next" @click="handleNext">></button>
       </div>
-      <div class="current" v-bind:class="{fadeIn, fadeOut, hide}">
-        <cartoon id="current" :num="current" />
+      <div class="back">
+        <div class="back-text">
+          Your last 5 viewed
+        </div>
+        <div class="grid">
+          <cartoon v-for="(num, index) in cartoons" :num="num" :key="index" />
+        </div>
       </div>
-      <div class="next">
-        <cartoon v-for="(num, index) in next" :num="num" :key="index" />
-      </div>
-      <button id="next" @click="handleNext">></button>
     </div>
+    <div id="flip"><font-awesome-icon :icon="icon" @click="handleFlip"/></div>
   </div>
 </template>
 
 <script>
   import Cartoon from './Cartoon'
+  import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+  import faThLarge from '@fortawesome/fontawesome-free-solid/faThLarge'
 
   export default {
     data: function () {
       return {
-        cartoons: [],
         current: '',
         next: [],
         previous: [],
         fadeIn: false,
         fadeOut: false,
-        hide: false
+        hide: false,
+        flip: false
       }
     },
-    components: {Cartoon},
+    components: {Cartoon, FontAwesomeIcon},
     methods: {
       checkUnique: function(next) {
         let unique
         this.current === next || this.previous.includes(next) || this.next.includes(next) ? unique = false : unique = true;
         return unique
+      },
+      handleFlip: function() {
+        this.flip = !this.flip
       },
       handleNext: function() {
         let self = this
@@ -96,17 +112,35 @@
       const next = this.randomCartoon()
       this.current = current
       this.next.push(next)
+    },
+    computed: {
+      cartoons: function() {
+        let toons = this.previous.slice(0, this.previous.length)
+        toons.push(this.current)
+        toons.concat(this.next)
+        if (toons.length >= 5) {
+          let length = toons.length
+          let del = toons.length - 10
+          toons.splice(0, del)
+        }
+        console.log(toons)
+        return toons
+      },
+      icon: function() {
+        return faThLarge
+      }
     }
   }
 </script>
 
-<style scoped>
+<style lang="scss">
   button {
     background-color: rgba(0, 0, 0, 0);
     box-shadow: 0 0 rgba(0, 0, 0, 0);
     border: none;
     border-radius: 50%;
     color: #F00012;
+    cursor: pointer;
     font-size: 30px;
     height: 40px;
     position: absolute;
@@ -116,8 +150,33 @@
   #back {
     left: calc(50% - 40px);
   }
+  #flip {
+    bottom: 25px;
+    color: gray;
+    cursor: pointer;
+    left: calc(50% - 57px);
+    opacity: .6;
+    position: absolute;
+  }
   #next {
     right: calc(50% - 40px);
+  }
+
+  #carousel {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+	  // position: relative;
+  }
+  .back {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: rotateY(180deg);
+  }
+  .back-text {
+    position: absolute;
+    left: calc(50% - 65px);
+    top: 20px;
   }
   .fadeIn {
     -webkit-animation-name: fadeIn;
@@ -129,22 +188,45 @@
     animation-name: fadeOut;
     animation-duration: .25s;
   }
+  .front, .back {
+    backface-visibility: hidden;
+  }
+  .front {
+    z-index: 2;
+		transform: rotateY(0deg)
+  }
+  .grid {
+    align-items: center;
+    display: grid;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    grid-template-columns: repeat(5, auto);
+    grid-auto-rows: 20%;
+  }
   .hide {
     opacity: 0;
   }
   .next {
     overflow: hidden;
     position: absolute;
-    right: -100px;
+    right: -200px;
     width: 100px;
   }
   .outer {
     overflow: hidden;
     position: relative;
     padding: 25px 20px;
+    perspective: 1000px;
+  }
+  .outer.flip #carousel {
+    transform: rotateY(180deg)
+  }
+  .outer.flip>#flip {
+    left: calc(50% - 8px);
+    top: 5%;
   }
   .prev {
-    left: -100px;
+    left: -200px;
     overflow: hidden;
     position: absolute;
     width: 100px;
@@ -191,6 +273,10 @@
   @media (min-width: 600px) {
     #back {
       left: 20px;
+    }
+    #flip {
+      top: calc(50% - 7px);
+      left: 50px;
     }
     #next {
       right: 20px;
