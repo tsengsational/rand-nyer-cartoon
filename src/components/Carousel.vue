@@ -120,7 +120,7 @@
         toons.concat(this.next)
         if (toons.length >= 5) {
           let length = toons.length
-          let del = toons.length - 10
+          let del = toons.length - 5
           toons.splice(0, del)
         }
         console.log(toons)
