@@ -145,21 +145,21 @@
     height: 40px;
     position: absolute;
     width: 40px;
-    bottom: 20px;
+    bottom: -5px;
   }
   #back {
-    left: calc(50% - 40px);
+    left: calc(50% - 45px);
   }
   #flip {
     bottom: 25px;
     color: gray;
     cursor: pointer;
-    left: calc(50% - 57px);
+    left: calc(50% - 8px);
     opacity: .6;
     position: absolute;
   }
   #next {
-    right: calc(50% - 40px);
+    right: calc(50% - 45px);
   }
 
   #carousel {
